@@ -1,8 +1,21 @@
 #include <iostream>
+#include <chrono>
+#include <random>
 
+// iostream
 using std::cin;
 using std::cout;
 using std::endl;
+
+// chrono
+using std::micro;
+using std::chrono::duration;
+using std::chrono::high_resolution_clock;
+
+// random
+using std::random_device;
+using std::mt19937;
+using std::uniform_int_distribution;
 
 typedef struct Node
 {
@@ -11,6 +24,7 @@ typedef struct Node
     Node* ptrPrev;
 } Node;
 
+int randomNumberGenerate(int, int);
 Node* createNode(int);
 void insertFront(Node**, int);
 void insertEnd(Node**, int);
@@ -21,12 +35,84 @@ void deleteNode(Node**, Node*);
 void deleteNodebyValue(Node**, int);
 Node* searchNodebyValue(Node**, int);
 void swapValue(Node*, Node*);
+void bubbleSort(Node**, int);
+void optimizedBubbleSort(Node**, int);
 void selectionSort(Node**);
 void optimizedSelectionSort(Node**);
 
 int main()
-{   
+{
+    
+    Node* lista1 = createNode(0);
+    Node* lista2 = createNode(0);
+    Node* lista3 = createNode(0);
+    Node* lista4 = createNode(0);
+    
+    for (int i = 0; i < 29999; i++) {
+        insertFront(&lista1, randomNumberGenerate(-69696969, 69696969));
+        insertFront(&lista2, randomNumberGenerate(-69696969, 69696969));
+        insertFront(&lista3, randomNumberGenerate(-69696969, 69696969));
+        insertFront(&lista4, randomNumberGenerate(-69696969, 69696969));
+    }
+    
+    // ------------------------ BUBBLE SORT ------------------------
+    auto start = high_resolution_clock::now();
+    
+    bubbleSort(&lista1, 30000);
+    
+    auto end = high_resolution_clock::now();
+    
+    duration<double, micro> duration = end - start;
+
+    cout << "Tempo de execução (BUBBLE): " << duration.count() << " microssegundos" << endl;
+    
+    // ------------------------ OPTIMIZED BUBBLE SORT ------------------------
+    start = high_resolution_clock::now();
+    
+    optimizedBubbleSort(&lista2, 30000);
+    
+    end = high_resolution_clock::now();
+    
+    duration = end - start;
+
+    cout << "Tempo de execução (OPTIMIZED BUBBLE): " << duration.count() << " microssegundos" << endl;
+    
+    // ------------------------ SELECTION SORT ------------------------
+    start = high_resolution_clock::now();
+    
+    selectionSort(&lista3);
+    
+    end = high_resolution_clock::now();
+    
+    duration = end - start;
+
+    cout << "Tempo de execução (SELECTION): " << duration.count() << " microssegundos" << endl;
+    
+    // ------------------------ OPTIMIZED SELECTION SORT ------------------------
+    start = high_resolution_clock::now();
+    
+    optimizedSelectionSort(&lista4);
+    
+    end = high_resolution_clock::now();
+    
+    duration = end - start;
+
+    cout << "Tempo de execução (OPTIMIZED SELECTION): " << duration.count() << " microssegundos" << endl;
+
     return 0;
+}
+
+int randomNumberGenerate(int iMin, int iMax)
+{
+    // Cria um gerador de números pseudo-aleatórios
+    random_device rd;
+    mt19937 gen(rd());
+    
+    // Cria uma distribuição uniforme de inteiros dentro da faixa especificada
+    uniform_int_distribution<int> dist(iMin, iMax);
+
+    // Retorna um número aleatório
+    return dist(gen);
 }
 
 
@@ -240,6 +326,46 @@ void bubbleSort(Node** head, int iLength)
     return;
 }
 
+void optimizedBubbleSort(Node** head, int iLength)
+{
+    if (*head == nullptr)
+    {
+        cout << "Lista vazia." << endl;
+        return;
+    }
+
+    Node* ptrCurrent = nullptr;
+    
+    // Inicia o ptrFinal no último nó da lista
+    // ptrFinal: ponteiro da posição que indica o fim de cada loop
+    Node* ptrFinal = *head;
+    while(ptrFinal -> ptrNext != nullptr) ptrFinal = ptrFinal -> ptrNext;
+    
+    int iOrdened = 0;
+
+    for (int i = 1; i < iLength; i++)
+    {
+        ptrCurrent = *head;
+
+        while (ptrCurrent->ptrNext != ptrFinal->ptrNext)
+        {
+            if (ptrCurrent->iPayload > ptrCurrent->ptrNext->iPayload)
+            {
+                swapValue(ptrCurrent, ptrCurrent->ptrNext);
+                iOrdened = 1;
+            }
+
+            ptrCurrent = ptrCurrent->ptrNext;
+        }
+        
+        if (!iOrdened) return; // caso em que a lista já está ordenada
+        ptrFinal = ptrFinal->ptrPrev;
+        iOrdened = 0; // atualiza a verificação
+    }
+
+    return;
+}
+
 void selectionSort(Node** head)
 {
     if (*head == nullptr)
@@ -257,7 +383,7 @@ void selectionSort(Node** head)
 
         while(ptrInnerLoop != nullptr)
         {
-            if (ptrInnerLoop->iPayload > ptrOuterLoop->iPayload)
+            if (ptrInnerLoop->iPayload < ptrOuterLoop->iPayload)
             {
                 swapValue(ptrOuterLoop, ptrInnerLoop);
             }
@@ -290,7 +416,7 @@ void optimizedSelectionSort(Node** head)
 
         while(ptrInnerLoop != nullptr)
         {
-            if (ptrInnerLoop->iPayload > ptrMinNode->iPayload)
+            if (ptrInnerLoop->iPayload < ptrMinNode->iPayload)
             {
                 ptrMinNode = ptrInnerLoop;
             }
