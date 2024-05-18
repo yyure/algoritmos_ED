@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdlib>
 #include <chrono>
 
 #include "src/sort_functions.h"
@@ -13,8 +12,6 @@ using std::endl;
 using std::chrono::nanoseconds;
 using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
-
-int randomNumberGenerate(int, int);
 
 int main()
 {   
