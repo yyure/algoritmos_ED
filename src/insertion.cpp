@@ -5,6 +5,8 @@
 using std::cout;
 using std::endl;
 
+using namespace DoubleLinkedList;
+
 void insertionSort(Node** head)
 {
     if (*head == nullptr) {

@@ -13,6 +13,9 @@ using std::chrono::nanoseconds;
 using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
 
+// linked list
+using namespace DoubleLinkedList;
+
 int main()
 {   
     Node* head;
