@@ -9,3 +9,4 @@ void optimizedBubbleSort(Node**, int);
 void selectionSort(Node**);
 void optimizedSelectionSort(Node**);
 void insertionSort(Node**);
+void bucketSort(Node**);

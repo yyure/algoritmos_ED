@@ -29,8 +29,8 @@ int main()
         }
         auto start = high_resolution_clock::now();
 
-        optimizedSelectionSort(&head); // Modifique, se quiser, a função de ordenação
-        
+        bucketSort(&head); // Modifique, se quiser, a função de ordenação
+
         auto end = high_resolution_clock::now();
         
         auto duration = duration_cast<nanoseconds>(end - start);
