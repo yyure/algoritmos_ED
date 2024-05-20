@@ -16,6 +16,7 @@ namespace DoubleLinkedList
     void insertAfter(Node*, int);
     void insertBefore(Node**, Node*, int);
     void deleteNode(Node**, Node*);
+    void deleteList(Node**);
     void deleteNodebyValue(Node**, int);
     Node* searchNodebyValue(Node**, int);
     void swapValue(Node*, Node*);

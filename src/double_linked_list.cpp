@@ -145,6 +145,16 @@ namespace DoubleLinkedList
         }
     }
 
+    void deleteList(Node** head)
+    {
+        while(*head != nullptr)
+        {
+            Node* nextNode = (*head)->ptrNext;
+            free(*head);
+            *head = nextNode;
+        }
+    }
+
     void deleteNodebyValue(Node** head, int iPayload)
     {
         if (*head == nullptr)
