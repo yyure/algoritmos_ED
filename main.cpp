@@ -25,7 +25,7 @@ int main()
         head = NULL;
 
         for (int j = 0; j < 10000; j++) {
-            insertFront(&head, rand());
+            insertFront(&head, rand() % 100 + 1);
         }
         auto start = high_resolution_clock::now();
 
