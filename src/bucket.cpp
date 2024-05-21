@@ -9,29 +9,54 @@ using namespace DoubleLinkedList;
 
 void bucketSort(Node** head)
 {
-    Node* bucket[101];
-
-    for(int i = 0; i <= 100; i++) bucket[i] = nullptr;
-
-    Node* current = *head;
-
-    while(current != nullptr)
+    //pega o maior e o menor valor da lista
+    int iMaxValue = 0, iMinValue = 0;
+    Node* ptrCurrent = *head;
+    while (ptrCurrent != nullptr)
     {
-        int iNum = current->iPayload;
-        insertEnd(&bucket[iNum], iNum);
-        current = current->ptrNext;
+        if (ptrCurrent->iPayload > iMaxValue) iMaxValue = ptrCurrent->iPayload;
+        if (ptrCurrent->iPayload < iMinValue) iMinValue = ptrCurrent->iPayload;
+        ptrCurrent = ptrCurrent->ptrNext;
     }
 
-    deleteList(head);
+    //calcula o range dos baldes
+    int iBucketCount = 10;
+    int iBucketRange = (iMaxValue - iMinValue) / iBucketCount + 1;
 
-    for(int i = 1; i <= 100; i++)
+    //cria os baldes
+    Node* arrBuckets[iBucketCount];
+    for (int i = 0; i < iBucketCount; i++) arrBuckets[i] = nullptr;
+
+    //insere os elementos nos baldes
+    ptrCurrent = *head;
+    while (ptrCurrent != nullptr)
     {
-        Node* currentBucket = bucket[i];
+        int iBucketIndex = (ptrCurrent->iPayload - iMinValue) / iBucketRange;
+        insertEnd(&arrBuckets[iBucketIndex], ptrCurrent->iPayload);
+        ptrCurrent = ptrCurrent->ptrNext;
+    }
 
-        while(currentBucket != nullptr)
+    //ordena os baldes
+    for (int i = 0; i < iBucketCount; i++) optimizedSelectionSort(&arrBuckets[i]);
+
+    deleteList(head);
+    
+    //concatena os baldes
+    for (int i = 0; i < iBucketCount; i++)
+    {
+        if (arrBuckets[i] != nullptr)
         {
-            insertEnd(head, i);
-            currentBucket = currentBucket->ptrNext;
+            if (*head == nullptr)
+            {
+                *head = arrBuckets[i];
+            }
+            else
+            {
+                Node* ptrCurrent = *head;
+                while (ptrCurrent->ptrNext != nullptr) ptrCurrent = ptrCurrent->ptrNext;
+                ptrCurrent->ptrNext = arrBuckets[i];
+                arrBuckets[i]->ptrPrev = ptrCurrent;
+            }
         }
     }
 }
