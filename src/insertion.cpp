@@ -7,15 +7,16 @@ using std::endl;
 
 using namespace DoubleLinkedList;
 
-void insertionSort(Node** head)
+template<typename T>
+void insertionSort(Node<T>** head)
 {
     if (*head == nullptr) {
         cout << "Lista vazia" << endl;
         return;
     }
     
-    Node* ptrOuterLoop = *head;
-    Node* ptrInnerLoop = nullptr;
+    Node<T>* ptrOuterLoop = *head;
+    Node<T>* ptrInnerLoop = nullptr;
     while (ptrOuterLoop != nullptr)
     {
         ptrInnerLoop = ptrOuterLoop;
@@ -34,3 +35,8 @@ void insertionSort(Node** head)
     
     return;
 }
+
+// instanciação explícita
+template void insertionSort<int>(Node<int>**);
+
+template void insertionSort<float>(Node<float>**);

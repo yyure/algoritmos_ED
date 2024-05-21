@@ -8,9 +8,10 @@ using std::endl;
 
 namespace DoubleLinkedList
 {
-    Node* createNode(int iPayLoad)
+    template<typename T>
+    Node<T>* createNode(T iPayLoad)
     {
-        Node* temp = (Node*) malloc(sizeof(Node));
+        Node<T>* temp = (Node<T>*) malloc(sizeof(Node<T>));
 
         if (temp != nullptr)
         {
@@ -21,13 +22,14 @@ namespace DoubleLinkedList
         return temp;
     }
 
-    void displayList(Node** head)
+    template<typename T>
+    void displayList(Node<T>** head)
     {
         if (*head == nullptr)
         {
             cout << "Lista vazia" << endl;
         } else {
-            Node* current = *head;
+            Node<T>* current = *head;
             while (current->ptrNext != nullptr)
             {
                 cout << current->iPayload << " ";
@@ -37,9 +39,10 @@ namespace DoubleLinkedList
         }
     }
 
-    void insertFront(Node** head, int iPayload)
+    template<typename T>
+    void insertFront(Node<T>** head, T iPayload)
     {
-        Node* temp = createNode(iPayload);
+        Node<T>* temp = createNode(iPayload);
 
         if (*head == nullptr)
         {
@@ -51,15 +54,16 @@ namespace DoubleLinkedList
         }
     }
 
-    void insertEnd(Node** head, int iPayload)
+    template<typename T>
+    void insertEnd(Node<T>** head, T iPayload)
     {
-        Node* temp = createNode(iPayload);
+        Node<T>* temp = createNode(iPayload);
 
         if (*head == nullptr)
         {
             *head = temp;
         } else {
-            Node* current = *head;
+            Node<T>* current = *head;
             while (current->ptrNext != nullptr)
             {
                 current = current->ptrNext;
@@ -69,13 +73,14 @@ namespace DoubleLinkedList
         }
     }
 
-    void insertAfter(Node* ptrLocation, int iPayload)
+    template<typename T>
+    void insertAfter(Node<T>* ptrLocation, T iPayload)
     {
         if (ptrLocation == nullptr)
         {
             cout << "Localização Vazia" << endl;
         } else {
-            Node* temp = createNode(iPayload);
+            Node<T>* temp = createNode(iPayload);
 
             if (ptrLocation->ptrNext != nullptr)
             {
@@ -87,7 +92,8 @@ namespace DoubleLinkedList
         }
     }
 
-    void insertBefore(Node** head, Node* ptrLocation, int iPayload)
+    template<typename T>
+    void insertBefore(Node<T>** head, Node<T>* ptrLocation, T iPayload)
     {
         if (*head == nullptr)
         {
@@ -99,7 +105,7 @@ namespace DoubleLinkedList
         {
             cout << "Localização Vazia" << endl;
         } else {
-            Node* temp = createNode(iPayload);
+            Node<T>* temp = createNode(iPayload);
 
             if (ptrLocation->ptrPrev != nullptr)
             {
@@ -115,7 +121,8 @@ namespace DoubleLinkedList
         }
     }
 
-    void deleteNode(Node** head, Node* ptrDelete)
+    template<typename T>
+    void deleteNode(Node<T>** head, Node<T>* ptrDelete)
     {
         if (*head == nullptr)
         {
@@ -145,35 +152,38 @@ namespace DoubleLinkedList
         }
     }
 
-    void deleteList(Node** head)
+    template<typename T>
+    void deleteList(Node<T>** head)
     {
         while(*head != nullptr)
         {
-            Node* nextNode = (*head)->ptrNext;
+            Node<T>* nextNode = (*head)->ptrNext;
             free(*head);
             *head = nextNode;
         }
     }
 
-    void deleteNodebyValue(Node** head, int iPayload)
+    template<typename T>
+    void deleteNodebyValue(Node<T>** head, T iPayload)
     {
         if (*head == nullptr)
         {
             cout << "Lista Vazia" << endl;
         } else {
-            Node* temp = searchNodebyValue(head, iPayload);
+            Node<T>* temp = searchNodebyValue(head, iPayload);
 
             deleteNode(head, temp);
         } 
     }
 
-    Node* searchNodebyValue(Node** head, int iPayLoad)
+    template<typename T>
+    Node<T>* searchNodebyValue(Node<T>** head, T iPayLoad)
     {
         if (*head == nullptr)
         {
             cout << "Lista Vazia" << endl;
         } else {
-            Node* current = *head;
+            Node<T>* current = *head;
             while (current->ptrNext != nullptr)
             {
                 if (current->iPayload == iPayLoad)
@@ -188,10 +198,36 @@ namespace DoubleLinkedList
         return nullptr;
     }
 
-    void swapValue(Node* ptrNode1, Node* ptrNode2)
+    template<typename T>
+    void swapValue(Node<T>* ptrNode1, Node<T>* ptrNode2)
     {
-        int iTemp = ptrNode1->iPayload;
+        T iTemp = ptrNode1->iPayload;
         ptrNode1->iPayload = ptrNode2->iPayload;
         ptrNode2->iPayload = iTemp;
     }
+
+    // instanciação explícita
+    template Node<int>* createNode<int>(int);
+    template void displayList<int>(Node<int>**);
+    template void insertFront<int>(Node<int>**, int);
+    template void insertEnd<int>(Node<int>**, int);
+    template void insertAfter<int>(Node<int>*, int);
+    template void insertBefore<int>(Node<int>**, Node<int>*, int);
+    template void deleteNode<int>(Node<int>**, Node<int>*);
+    template void deleteList<int>(Node<int>**);
+    template void deleteNodebyValue<int>(Node<int>**, int);
+    template Node<int>* searchNodebyValue<int>(Node<int>**, int);
+    template void swapValue<int>(Node<int>*, Node<int>*);
+
+    template Node<float>* createNode<float>(float);
+    template void displayList<float>(Node<float>**);
+    template void insertFront<float>(Node<float>**, float);
+    template void insertEnd<float>(Node<float>**, float);
+    template void insertAfter<float>(Node<float>*, float);
+    template void insertBefore<float>(Node<float>**, Node<float>*, float);
+    template void deleteNode<float>(Node<float>**, Node<float>*);
+    template void deleteList<float>(Node<float>**);
+    template void deleteNodebyValue<float>(Node<float>**, float);
+    template Node<float>* searchNodebyValue<float>(Node<float>**, float);
+    template void swapValue<float>(Node<float>*, Node<float>*);
 }

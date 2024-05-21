@@ -4,9 +4,15 @@
 
 using namespace DoubleLinkedList;
 
-void bubbleSort(Node**, int);
-void optimizedBubbleSort(Node**, int);
-void selectionSort(Node**);
-void optimizedSelectionSort(Node**);
-void insertionSort(Node**);
-void bucketSort(Node**);
+template<typename T>
+void bubbleSort(Node<T>**);
+template<typename T>
+void optimizedBubbleSort(Node<T>**);
+template<typename T>
+void selectionSort(Node<T>**);
+template<typename T>
+void optimizedSelectionSort(Node<T>**);
+template<typename T>
+void insertionSort(Node<T>**);
+template<typename T>
+void bucketSort(Node<T>**);

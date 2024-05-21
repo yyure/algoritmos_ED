@@ -18,7 +18,7 @@ using namespace DoubleLinkedList;
 
 int main()
 {   
-    Node* head;
+    Node<int>* head;
 
     for (int i = 0; i < 100; i++) {
 

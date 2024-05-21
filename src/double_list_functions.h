@@ -2,22 +2,34 @@
 
 namespace DoubleLinkedList
 {
-    typedef struct Node
+    template<typename T>
+    struct Node
     {
-        int iPayload;
-        Node* ptrNext;
-        Node* ptrPrev;
-    } Node;
+        T iPayload;
+        Node<T>* ptrNext;
+        Node<T>* ptrPrev;
+    };
 
-    Node* createNode(int);
-    void displayList(Node**);
-    void insertFront(Node**, int);
-    void insertEnd(Node**, int);
-    void insertAfter(Node*, int);
-    void insertBefore(Node**, Node*, int);
-    void deleteNode(Node**, Node*);
-    void deleteList(Node**);
-    void deleteNodebyValue(Node**, int);
-    Node* searchNodebyValue(Node**, int);
-    void swapValue(Node*, Node*);
+    template<typename T>
+    Node<T>* createNode(T);
+    template<typename T>
+    void displayList(Node<T>**);
+    template<typename T>
+    void insertFront(Node<T>**, T);
+    template<typename T>
+    void insertEnd(Node<T>**, T);
+    template<typename T>
+    void insertAfter(Node<T>*, T);
+    template<typename T>
+    void insertBefore(Node<T>**, Node<T>*, T);
+    template<typename T>
+    void deleteNode(Node<T>**, Node<T>*);
+    template<typename T>
+    void deleteList(Node<T>**);
+    template<typename T>
+    void deleteNodebyValue(Node<T>**, T);
+    template<typename T>
+    Node<T>* searchNodebyValue(Node<T>**, T);
+    template<typename T>
+    void swapValue(Node<T>*, Node<T>*);
 }

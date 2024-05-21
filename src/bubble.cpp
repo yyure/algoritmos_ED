@@ -7,7 +7,8 @@ using std::endl;
 
 using namespace DoubleLinkedList;
 
-void bubbleSort(Node** head)
+template<typename T>
+void bubbleSort(Node<T>** head)
 {
     if (*head == nullptr)
     {
@@ -15,8 +16,8 @@ void bubbleSort(Node** head)
         return;
     }
 
-    Node* ptrCount = *head; // Atua como um contador do número de loops externos
-    Node* ptrCurrent = nullptr;
+    Node<T>* ptrCount = *head; // Atua como um contador do número de loops externos
+    Node<T>* ptrCurrent = nullptr;
 
     while (ptrCount->ptrNext != nullptr)
     {
@@ -38,7 +39,8 @@ void bubbleSort(Node** head)
     return;
 }
 
-void optimizedBubbleSort(Node** head)
+template<typename T>
+void optimizedBubbleSort(Node<T>** head)
 {
     if (*head == nullptr)
     {
@@ -46,12 +48,12 @@ void optimizedBubbleSort(Node** head)
         return;
     }
 
-    Node* ptrCount = *head;
-    Node* ptrCurrent = nullptr;
+    Node<T>* ptrCount = *head;
+    Node<T>* ptrCurrent = nullptr;
     
     // Inicia o ptrFinal no último nó da lista
     // ptrFinal: ponteiro da posição que indica o fim de cada loop
-    Node* ptrFinal = *head;
+    Node<T>* ptrFinal = *head;
     while(ptrFinal -> ptrNext != nullptr) ptrFinal = ptrFinal -> ptrNext;
     
     int iOrdened = 0; // verifica se a lista está ordenada
@@ -80,3 +82,10 @@ void optimizedBubbleSort(Node** head)
 
     return;
 }
+
+// instanciação explícita
+template void bubbleSort<int>(Node<int>**);
+template void optimizedBubbleSort<int>(Node<int>**);
+
+template void bubbleSort<float>(Node<float>**);
+template void optimizedBubbleSort<float>(Node<float>**);

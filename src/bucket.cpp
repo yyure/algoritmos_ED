@@ -7,11 +7,12 @@ using std::endl;
 
 using namespace DoubleLinkedList;
 
-void bucketSort(Node** head)
+template<typename T>
+void bucketSort(Node<T>** head)
 {
     //pega o maior e o menor valor da lista
     int iMaxValue = 0, iMinValue = 0;
-    Node* ptrCurrent = *head;
+    Node<T>* ptrCurrent = *head;
     while (ptrCurrent != nullptr)
     {
         if (ptrCurrent->iPayload > iMaxValue) iMaxValue = ptrCurrent->iPayload;
@@ -24,7 +25,7 @@ void bucketSort(Node** head)
     int iBucketRange = (iMaxValue - iMinValue) / iBucketCount + 1;
 
     //cria os baldes
-    Node* arrBuckets[iBucketCount];
+    Node<T>* arrBuckets[iBucketCount];
     for (int i = 0; i < iBucketCount; i++) arrBuckets[i] = nullptr;
 
     //insere os elementos nos baldes
@@ -52,7 +53,7 @@ void bucketSort(Node** head)
             }
             else
             {
-                Node* ptrCurrent = *head;
+                Node<T>* ptrCurrent = *head;
                 while (ptrCurrent->ptrNext != nullptr) ptrCurrent = ptrCurrent->ptrNext;
                 ptrCurrent->ptrNext = arrBuckets[i];
                 arrBuckets[i]->ptrPrev = ptrCurrent;
@@ -60,3 +61,8 @@ void bucketSort(Node** head)
         }
     }
 }
+
+// instanciação explícita
+template void bucketSort<int>(Node<int>**);
+
+template void bucketSort<float>(Node<float>**);
