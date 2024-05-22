@@ -1,37 +1,49 @@
 # Bucket Sort
 
-O Bucket Sort é um algoritmo de classificação que divide o conjunto de elementos em uma série de "baldes" e, em seguida, classifica cada balde individualmente, geralmente usando outro algoritmo de classificação, como o Insertion Sort. Aqui está uma explicação do código fornecido:
+O Bucket Sort é um algoritmo de ordenação que divide o conjunto de elementos em uma série de "baldes" e, em seguida, ordena cada balde individualmente, geralmente usando outro algoritmo de ordenação.
 
-## Declaração da função bucketSort
+## Funcionamento do Bucket Sort
+- Inicialmente, encontra-se o valor máximo e mínimo da lista de elementos a serem ordenados para determinar o intervalo de cada bucket.
+- Divide-se o intervalo de valores em um número fixo de buckets. Cada elemento da lista é então colocado no bucket correspondente com base em seu valor.
+- Cada bucket é então ordenado individualmente. Isso pode ser feito utilizando qualquer algoritmo de ordenação.
+- Finalmente, os buckets ordenados são concatenados para formar a lista final ordenada.
 
-A função bucketSort é declarada para classificar uma lista duplamente encadeada (Node** head) usando o algoritmo de Bucket Sort.
+## Exemplo
+Imagine que temos a lista de números [29, 25, 3, 49, 9, 37, 21, 43] e queremos ordená-los utilizando o Bucket Sort.
 
-## Criação dos baldes:
+### Distribuição nos Buckets
 
-Um array de ponteiros para nós (Node* bucket[101]) é criado para representar os baldes. Aqui, estamos assumindo que os elementos a serem classificados variam de 1 a 100.
+Suponha que decidimos usar 5 buckets. Calculamos o intervalo de cada bucket com base no valor máximo (49) e mínimo (3) dos elementos.
+Intervalo de cada bucket: (49 - 3) / 5 = 9.2 (aproximamos para 10 para facilitar).
+Então os buckets seriam:
+```
+Bucket 0: 0-9
+Bucket 1: 10-19
+Bucket 2: 20-29
+Bucket 3: 30-39
+Bucket 4: 40-49
+```
+Distribuímos os elementos nos buckets:
+```
+Bucket 0: [3, 9]
+Bucket 1: []
+Bucket 2: [29, 25, 21]
+Bucket 3: [37]
+Bucket 4: [49, 43]
+```
+### Ordenação dos Buckets
 
-Cada elemento do array é inicializado como nullptr para indicar que inicialmente nenhum elemento foi adicionado aos baldes.
+Ordenamos cada bucket individualmente:
+```
+Bucket 0: [3, 9] (já está ordenado)
+Bucket 1: [] (vazio)
+Bucket 2: [21, 25, 29]
+Bucket 3: [37] (já está ordenado)
+Bucket 4: [43, 49]
+```
+### Concatenar os Buckets Ordenados
 
-## Distribuição dos elementos nos baldes:
-
-A função itera sobre a lista encadeada original, percorrendo cada nó.
-
-Para cada nó, o valor contido no nó é usado como um índice para determinar em qual balde o nó deve ser colocado.
-
-O nó é então inserido no final do balde correspondente usando a função insertEnd.
-
-## Liberação da lista original:
-
-Após distribuir todos os elementos nos baldes, a lista original é liberada usando a função deleteList. Isso é feito porque os elementos da lista original não são mais necessários após serem distribuídos nos baldes.
-
-## Concatenação dos baldes ordenados:
-
-Em seguida, cada balde é percorrido em ordem, e os elementos de cada balde são adicionados de volta à lista original.
-
-Isso é feito percorrendo cada balde e inserindo cada elemento no final da lista original usando a função insertEnd.
-
-## Resultado:
-
-Após esse processo, a lista original contém todos os elementos ordenados.
-
-O Bucket Sort é eficaz quando os elementos estão uniformemente distribuídos no intervalo de classificação e quando o número de elementos em cada balde é relativamente pequeno. No entanto, a eficiência do Bucket Sort pode ser afetada negativamente se os elementos estiverem muito concentrados em alguns baldes, ou se o número de baldes for muito pequeno em relação ao número total de elementos.
+Concatenamos os buckets ordenados para formar a lista final ordenada:
+```
+Lista final: [3, 9, 21, 25, 29, 37, 43, 49]
+```
