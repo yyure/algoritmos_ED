@@ -5,14 +5,14 @@
 using namespace DoubleLinkedList;
 
 template<typename T>
-void bubbleSort(Node<T>**);
+void bubbleSort(List<T>*);
 template<typename T>
-void optimizedBubbleSort(Node<T>**);
+void optimizedBubbleSort(List<T>*);
 template<typename T>
-void selectionSort(Node<T>**);
+void selectionSort(List<T>*);
 template<typename T>
-void optimizedSelectionSort(Node<T>**);
+void optimizedSelectionSort(List<T>*);
 template<typename T>
-void insertionSort(Node<T>**);
+void insertionSort(List<T>*);
 template<typename T>
-void bucketSort(Node<T>**);
+void bucketSort(List<T>*);

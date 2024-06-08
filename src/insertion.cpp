@@ -8,14 +8,14 @@ using std::endl;
 using namespace DoubleLinkedList;
 
 template<typename T>
-void insertionSort(Node<T>** head)
+void insertionSort(List<T>* list)
 {
-    if (*head == nullptr) {
+    if (list->ptrHead == nullptr) {
         cout << "Lista vazia" << endl;
         return;
     }
     
-    Node<T>* ptrOuterLoop = *head;
+    Node<T>* ptrOuterLoop = list->ptrHead;
     Node<T>* ptrInnerLoop = nullptr;
     while (ptrOuterLoop != nullptr)
     {
@@ -37,6 +37,6 @@ void insertionSort(Node<T>** head)
 }
 
 // instanciação explícita
-template void insertionSort<int>(Node<int>**);
+template void insertionSort<int>(List<int>*);
 
-template void insertionSort<float>(Node<float>**);
+template void insertionSort<float>(List<float>*);

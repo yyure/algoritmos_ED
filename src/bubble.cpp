@@ -8,20 +8,20 @@ using std::endl;
 using namespace DoubleLinkedList;
 
 template<typename T>
-void bubbleSort(Node<T>** head)
+void bubbleSort(List<T>* list)
 {
-    if (*head == nullptr)
+    if (list->ptrHead == nullptr)
     {
         cout << "Lista Vazia" << endl;
         return;
     }
 
-    Node<T>* ptrCount = *head; // Atua como um contador do número de loops externos
+    Node<T>* ptrCount = list->ptrHead; // Atua como um contador do número de loops externos
     Node<T>* ptrCurrent = nullptr;
 
     while (ptrCount->ptrNext != nullptr)
     {
-        ptrCurrent = *head;
+        ptrCurrent = list->ptrHead;
 
         while (ptrCurrent->ptrNext != nullptr)
         {
@@ -40,42 +40,39 @@ void bubbleSort(Node<T>** head)
 }
 
 template<typename T>
-void optimizedBubbleSort(Node<T>** head)
+void optimizedBubbleSort(List<T>* list)
 {
-    if (*head == nullptr)
+    if (list->ptrHead == nullptr)
     {
         cout << "Lista vazia." << endl;
         return;
     }
 
-    Node<T>* ptrCount = *head;
+    Node<T>* ptrCount = list->ptrHead; // Atua como um contador do número de loops externos
     Node<T>* ptrCurrent = nullptr;
     
-    // Inicia o ptrFinal no último nó da lista
-    // ptrFinal: ponteiro da posição que indica o fim de cada loop
-    Node<T>* ptrFinal = *head;
-    while(ptrFinal -> ptrNext != nullptr) ptrFinal = ptrFinal -> ptrNext;
+    Node<T>* ptrFinal = list->ptrTail;
     
-    int iOrdened = 0; // verifica se a lista está ordenada
+    bool bOrdened = true; // verifica se a lista está ordenada
 
     while (ptrCount->ptrNext != nullptr)
     {
-        ptrCurrent = *head;
+        ptrCurrent = list->ptrHead;
 
         while (ptrCurrent->ptrNext != ptrFinal->ptrNext)
         {
             if (ptrCurrent->iPayload > ptrCurrent->ptrNext->iPayload)
             {
                 swapValue(ptrCurrent, ptrCurrent->ptrNext);
-                iOrdened = 1;
+                bOrdened = false;
             }
 
             ptrCurrent = ptrCurrent->ptrNext;
         }
         
-        if (!iOrdened) return; // caso em que a lista já está ordenada
+        if (bOrdened) return; // caso em que a lista já está ordenada
         ptrFinal = ptrFinal->ptrPrev;
-        iOrdened = 0; // atualiza a verificação
+        bOrdened = true; // atualiza a verificação
 
         ptrCount = ptrCount->ptrNext;
     }
@@ -84,8 +81,8 @@ void optimizedBubbleSort(Node<T>** head)
 }
 
 // instanciação explícita
-template void bubbleSort<int>(Node<int>**);
-template void optimizedBubbleSort<int>(Node<int>**);
+template void bubbleSort<int>(List<int>*);
+template void optimizedBubbleSort<int>(List<int>*);
 
-template void bubbleSort<float>(Node<float>**);
-template void optimizedBubbleSort<float>(Node<float>**);
+template void bubbleSort<float>(List<float>*);
+template void optimizedBubbleSort<float>(List<float>*);

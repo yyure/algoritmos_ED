@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
+
 #include "double_list_functions.h"
+#include "binary_search_tree.h"
 #include "sort_functions.h"
 
 using std::cout;
@@ -23,13 +25,26 @@ namespace DoubleLinkedList
     }
 
     template<typename T>
-    void displayList(Node<T>** head)
+    List<T>* createList()
     {
-        if (*head == nullptr)
+        List<T>* temp = (List<T>*) malloc(sizeof(List<T>));
+
+        if (temp != nullptr)
+        {
+            temp->ptrHead = nullptr;
+            temp->ptrTail = nullptr;
+        }
+        return temp;
+    }
+
+    template<typename T>
+    void displayList(List<T>* list)
+    {
+        if (list->ptrHead == nullptr)
         {
             cout << "Lista vazia" << endl;
         } else {
-            Node<T>* current = *head;
+            Node<T>* current = list->ptrHead;
             while (current->ptrNext != nullptr)
             {
                 cout << current->iPayload << " ";
@@ -40,42 +55,46 @@ namespace DoubleLinkedList
     }
 
     template<typename T>
-    void insertFront(Node<T>** head, T iPayload)
+    void insertFront(List<T>* list, T iPayload)
     {
         Node<T>* temp = createNode(iPayload);
 
-        if (*head == nullptr)
+        if (list->ptrHead == nullptr)
         {
-            *head = temp;
+            list->ptrHead = temp;
+            list->ptrTail = temp;
         } else {
-            (*head)->ptrPrev = temp;
-            temp->ptrNext = *head;
-            *head = temp;
+            temp->ptrNext = list->ptrHead;
+            list->ptrHead->ptrPrev = temp;
+            list->ptrHead = temp;
         }
     }
 
     template<typename T>
-    void insertEnd(Node<T>** head, T iPayload)
+    void insertEnd(List<T>* list, T iPayload)
     {
         Node<T>* temp = createNode(iPayload);
 
-        if (*head == nullptr)
+        if (list->ptrHead == nullptr)
         {
-            *head = temp;
+            list->ptrHead = temp;
+            list->ptrTail = temp;
         } else {
-            Node<T>* current = *head;
-            while (current->ptrNext != nullptr)
-            {
-                current = current->ptrNext;
-            }
-            current->ptrNext = temp;
-            temp->ptrPrev = current;
+            list->ptrTail->ptrNext = temp;
+            temp->ptrPrev = list->ptrTail;
+            list->ptrTail = temp;
         }
     }
 
     template<typename T>
-    void insertAfter(Node<T>* ptrLocation, T iPayload)
+    void insertAfter(List<T>* list, Node<T>* ptrLocation, T iPayload)
     {
+        if (list->ptrHead == nullptr)
+        {
+            cout << "Lista Vazia" << endl;
+            return;
+        }
+
         if (ptrLocation == nullptr)
         {
             cout << "Localização Vazia" << endl;
@@ -86,6 +105,10 @@ namespace DoubleLinkedList
             {
                 ptrLocation->ptrNext->ptrPrev = temp;
                 temp->ptrNext = ptrLocation->ptrNext;
+            } else {
+                // o nó inserido torna-se o último da lista
+                // atualiza o ponteiro da lista para o nó
+                list->ptrTail = temp;
             }
             ptrLocation->ptrNext = temp;
             temp->ptrPrev = ptrLocation;
@@ -93,9 +116,9 @@ namespace DoubleLinkedList
     }
 
     template<typename T>
-    void insertBefore(Node<T>** head, Node<T>* ptrLocation, T iPayload)
+    void insertBefore(List<T>* list, Node<T>* ptrLocation, T iPayload)
     {
-        if (*head == nullptr)
+        if (list->ptrHead == nullptr)
         {
             cout << "Lista Vazia" << endl;
             return;
@@ -114,7 +137,7 @@ namespace DoubleLinkedList
             } else {
                 // o nó inserido torna-se o primeiro da lista
                 // atualiza o ponteiro da lista para o nó
-                *head = temp;
+                list->ptrHead = temp;
             }
             ptrLocation->ptrPrev = temp;
             temp->ptrNext = ptrLocation;
@@ -122,30 +145,24 @@ namespace DoubleLinkedList
     }
 
     template<typename T>
-    void deleteNode(Node<T>** head, Node<T>* ptrDelete)
+    void deleteNode(List<T>* list, Node<T>* ptrDelete)
     {
-        if (*head == nullptr)
+        if (list->ptrHead == nullptr)
         {
             cout << "Lista Vazia" << endl;
-            return;
-        }
-        
-        if (ptrDelete == nullptr)
-        {
-            cout << "Nó Vazio" << endl;
         } else {
-            if (ptrDelete->ptrPrev == nullptr)
+            if (ptrDelete->ptrPrev != nullptr)
             {
-                // o nó a ser deletado é o primeiro da lista
-                // atualiza o ponteiro da lista para o ptrNext
-                *head = ptrDelete->ptrNext;
-                ptrDelete->ptrNext->ptrPrev = nullptr;
-            } else if (ptrDelete->ptrNext == nullptr) {
-                // o nó a ser deletado é o último da lista
-                ptrDelete->ptrPrev->ptrNext = nullptr;
-            } else {
                 ptrDelete->ptrPrev->ptrNext = ptrDelete->ptrNext;
+            } else {
+                list->ptrHead = ptrDelete->ptrNext;
+            }
+
+            if (ptrDelete->ptrNext != nullptr)
+            {
                 ptrDelete->ptrNext->ptrPrev = ptrDelete->ptrPrev;
+            } else {
+                list->ptrTail = ptrDelete->ptrPrev;
             }
 
             free(ptrDelete);
@@ -153,37 +170,24 @@ namespace DoubleLinkedList
     }
 
     template<typename T>
-    void deleteList(Node<T>** head)
+    void deleteList(List<T>* list)
     {
-        while(*head != nullptr)
+        while(list->ptrHead != nullptr)
         {
-            Node<T>* nextNode = (*head)->ptrNext;
-            free(*head);
-            *head = nextNode;
+            Node<T>* nextNode = list->ptrHead->ptrNext;
+            free(list->ptrHead);
+            list->ptrHead = nextNode;
         }
     }
 
     template<typename T>
-    void deleteNodebyValue(Node<T>** head, T iPayload)
+    Node<T>* searchNodebyValue(List<T>* list, T iPayLoad)
     {
-        if (*head == nullptr)
+        if (list->ptrHead == nullptr)
         {
             cout << "Lista Vazia" << endl;
         } else {
-            Node<T>* temp = searchNodebyValue(head, iPayload);
-
-            deleteNode(head, temp);
-        } 
-    }
-
-    template<typename T>
-    Node<T>* searchNodebyValue(Node<T>** head, T iPayLoad)
-    {
-        if (*head == nullptr)
-        {
-            cout << "Lista Vazia" << endl;
-        } else {
-            Node<T>* current = *head;
+            Node<T>* current = list->ptrHead;
             while (current->ptrNext != nullptr)
             {
                 if (current->iPayload == iPayLoad)
@@ -199,6 +203,19 @@ namespace DoubleLinkedList
     }
 
     template<typename T>
+    void deleteNodebyValue(List<T>* list, T iPayload)
+    {
+        if (list->ptrHead == nullptr)
+        {
+            cout << "Lista Vazia" << endl;
+        } else {
+            Node<T>* temp = searchNodebyValue(list, iPayload);
+
+            deleteNode(list, temp);
+        }
+    }
+
+    template<typename T>
     void swapValue(Node<T>* ptrNode1, Node<T>* ptrNode2)
     {
         T iTemp = ptrNode1->iPayload;
@@ -207,27 +224,39 @@ namespace DoubleLinkedList
     }
 
     // instanciação explícita
+    template List<int>* createList<int>();
     template Node<int>* createNode<int>(int);
-    template void displayList<int>(Node<int>**);
-    template void insertFront<int>(Node<int>**, int);
-    template void insertEnd<int>(Node<int>**, int);
-    template void insertAfter<int>(Node<int>*, int);
-    template void insertBefore<int>(Node<int>**, Node<int>*, int);
-    template void deleteNode<int>(Node<int>**, Node<int>*);
-    template void deleteList<int>(Node<int>**);
-    template void deleteNodebyValue<int>(Node<int>**, int);
-    template Node<int>* searchNodebyValue<int>(Node<int>**, int);
+    template void displayList<int>(List<int>*);
+    template void insertFront<int>(List<int>*, int);
+    template void insertEnd<int>(List<int>*, int);
+    template void insertAfter<int>(List<int>*, Node<int>*, int);
+    template void insertBefore<int>(List<int>*, Node<int>*, int);
+    template void deleteNode<int>(List<int>*, Node<int>*);
+    template void deleteList<int>(List<int>*);
+    template void deleteNodebyValue<int>(List<int>*, int);
+    template Node<int>* searchNodebyValue<int>(List<int>*, int);
     template void swapValue<int>(Node<int>*, Node<int>*);
 
+    template List<float>* createList<float>();
     template Node<float>* createNode<float>(float);
-    template void displayList<float>(Node<float>**);
-    template void insertFront<float>(Node<float>**, float);
-    template void insertEnd<float>(Node<float>**, float);
-    template void insertAfter<float>(Node<float>*, float);
-    template void insertBefore<float>(Node<float>**, Node<float>*, float);
-    template void deleteNode<float>(Node<float>**, Node<float>*);
-    template void deleteList<float>(Node<float>**);
-    template void deleteNodebyValue<float>(Node<float>**, float);
-    template Node<float>* searchNodebyValue<float>(Node<float>**, float);
+    template void displayList<float>(List<float>*);
+    template void insertFront<float>(List<float>*, float);
+    template void insertEnd<float>(List<float>*, float);
+    template void insertAfter<float>(List<float>*, Node<float>*, float);
+    template void insertBefore<float>(List<float>*, Node<float>*, float);
+    template void deleteNode<float>(List<float>*, Node<float>*);
+    template void deleteList<float>(List<float>*);
+    template void deleteNodebyValue<float>(List<float>*, float);
+    template Node<float>* searchNodebyValue<float>(List<float>*, float);
     template void swapValue<float>(Node<float>*, Node<float>*);
+
+    template List<BinarySearchTree::Node<int>*>* createList<BinarySearchTree::Node<int>*>();
+    template Node<BinarySearchTree::Node<int>*>* createNode<BinarySearchTree::Node<int>*>(BinarySearchTree::Node<int>*);
+    template void insertEnd<BinarySearchTree::Node<int>*>(List<BinarySearchTree::Node<int>*>*, BinarySearchTree::Node<int>*);
+    template void deleteNode<BinarySearchTree::Node<int>*>(List<BinarySearchTree::Node<int>*>*, Node<BinarySearchTree::Node<int>*>*);
+
+    template List<BinarySearchTree::Node<float>*>* createList<BinarySearchTree::Node<float>*>();
+    template Node<BinarySearchTree::Node<float>*>* createNode<BinarySearchTree::Node<float>*>(BinarySearchTree::Node<float>*);
+    template void insertEnd<BinarySearchTree::Node<float>*>(List<BinarySearchTree::Node<float>*>*, BinarySearchTree::Node<float>*);
+    template void deleteNode<BinarySearchTree::Node<float>*>(List<BinarySearchTree::Node<float>*>*, Node<BinarySearchTree::Node<float>*>*);
 }

@@ -8,11 +8,11 @@ using std::endl;
 using namespace DoubleLinkedList;
 
 template<typename T>
-void bucketSort(Node<T>** head)
+void bucketSort(List<T>* list)
 {
     //pega o maior e o menor valor da lista
     int iMaxValue = 0, iMinValue = 0;
-    Node<T>* ptrCurrent = *head;
+    Node<T>* ptrCurrent = list->ptrHead;
     while (ptrCurrent != nullptr)
     {
         if (ptrCurrent->iPayload > iMaxValue) iMaxValue = ptrCurrent->iPayload;
@@ -25,44 +25,42 @@ void bucketSort(Node<T>** head)
     int iBucketRange = (iMaxValue - iMinValue) / iBucketCount + 1;
 
     //cria os baldes
-    Node<T>* arrBuckets[iBucketCount];
-    for (int i = 0; i < iBucketCount; i++) arrBuckets[i] = nullptr;
+    List<T>* arrBuckets[iBucketCount];
+    for (int i = 0; i < iBucketCount; i++) arrBuckets[i] = createList<T>();
 
     //insere os elementos nos baldes
-    ptrCurrent = *head;
+    ptrCurrent = list->ptrHead;
     while (ptrCurrent != nullptr)
     {
         int iBucketIndex = (ptrCurrent->iPayload - iMinValue) / iBucketRange;
-        insertEnd(&arrBuckets[iBucketIndex], ptrCurrent->iPayload);
+        insertEnd(arrBuckets[iBucketIndex], ptrCurrent->iPayload);
         ptrCurrent = ptrCurrent->ptrNext;
     }
 
     //ordena os baldes
-    for (int i = 0; i < iBucketCount; i++) optimizedSelectionSort(&arrBuckets[i]);
+    for (int i = 0; i < iBucketCount; i++) optimizedSelectionSort(arrBuckets[i]);
 
-    deleteList(head);
+    deleteList(list);
     
     //concatena os baldes
     for (int i = 0; i < iBucketCount; i++)
     {
         if (arrBuckets[i] != nullptr)
         {
-            if (*head == nullptr)
+            if (list->ptrHead == nullptr)
             {
-                *head = arrBuckets[i];
-            }
-            else
-            {
-                Node<T>* ptrCurrent = *head;
-                while (ptrCurrent->ptrNext != nullptr) ptrCurrent = ptrCurrent->ptrNext;
-                ptrCurrent->ptrNext = arrBuckets[i];
-                arrBuckets[i]->ptrPrev = ptrCurrent;
+                list->ptrHead = arrBuckets[i]->ptrHead;
+                list->ptrTail = arrBuckets[i]->ptrTail;
+            } else {
+                list->ptrTail->ptrNext = arrBuckets[i]->ptrHead;
+                arrBuckets[i]->ptrHead->ptrPrev = list->ptrTail;
+                list->ptrTail = arrBuckets[i]->ptrTail;
             }
         }
     }
 }
 
 // instanciação explícita
-template void bucketSort<int>(Node<int>**);
+template void bucketSort<int>(List<int>*);
 
-template void bucketSort<float>(Node<float>**);
+template void bucketSort<float>(List<float>*);

@@ -8,15 +8,15 @@ using std::endl;
 using namespace DoubleLinkedList;
 
 template<typename T>
-void selectionSort(Node<T>** head)
+void selectionSort(List<T>* list)
 {
-    if (*head == nullptr)
+    if (list->ptrHead == nullptr)
     {
         cout << "Lista vazia." << endl;
         return;
     }
 
-    Node<T>* ptrOuterLoop = *head;
+    Node<T>* ptrOuterLoop = list->ptrHead;
     Node<T>* ptrInnerLoop = nullptr;
 
     while (ptrOuterLoop != nullptr)
@@ -40,15 +40,15 @@ void selectionSort(Node<T>** head)
 }
 
 template<typename T>
-void optimizedSelectionSort(Node<T>** head)
+void optimizedSelectionSort(List<T>* list)
 {
-    if (*head == nullptr)
+    if (list->ptrHead == nullptr)
     {
         cout << "Lista vazia." << endl;
         return;
     }
 
-    Node<T>* ptrOuterLoop = *head;
+    Node<T>* ptrOuterLoop = list->ptrHead;
     Node<T>* ptrInnerLoop = nullptr;
     Node<T>* ptrMinNode = nullptr;
 
@@ -76,8 +76,8 @@ void optimizedSelectionSort(Node<T>** head)
 }
 
 // instanciação explícita
-template void selectionSort<int>(Node<int>**);
-template void optimizedSelectionSort<int>(Node<int>**);
+template void selectionSort<int>(List<int>*);
+template void optimizedSelectionSort<int>(List<int>*);
 
-template void selectionSort<float>(Node<float>**);
-template void optimizedSelectionSort<float>(Node<float>**);
+template void selectionSort<float>(List<float>*);
+template void optimizedSelectionSort<float>(List<float>*);
