@@ -1,8 +1,10 @@
 #include <iostream>
+#include <cstdlib>
 #include <chrono>
 
 #include "src/sort_functions.h"
 #include "src/double_list_functions.h"
+#include "src/binary_search_tree.h"
 
 // iostream
 using std::cout;
@@ -13,23 +15,48 @@ using std::chrono::nanoseconds;
 using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
 
-// linked list
-using namespace DoubleLinkedList;
-
 int main()
 {   
-    Node<int>* head;
+    /*
+    DoubleLinkedList::List<int>* list;
 
+    // Criar 100 listas com 10000 elementos cada
+    // Analisar o tempo de cada algoritmo de ordenação
     for (int i = 0; i < 100; i++) {
 
-        head = NULL;
+        list = DoubleLinkedList::createList<int>();
 
         for (int j = 0; j < 10000; j++) {
-            insertFront(&head, rand() % 100 + 1);
+            DoubleLinkedList::insertFront(list, rand() % 100 + 1); // números entre 1 e 100
         }
         auto start = high_resolution_clock::now();
 
-        bucketSort(&head); // Modifique, se quiser, a função de ordenação
+        bucketSort(list); // Modifique, se quiser, a função de ordenação
+
+        auto end = high_resolution_clock::now();
+        
+        auto duration = duration_cast<nanoseconds>(end - start);
+
+        cout << duration.count() << endl;
+
+        DoubleLinkedList::deleteList(list);
+        free(list);
+    }*/
+
+    BinarySearchTree::Node<int>* tree;
+
+    // criar 100 árvores binárias, com 200000 nós cada
+    // Analisar o tempo de cada tipo de busca
+    for (int i = 0; i < 100; i++) {
+
+        tree = BinarySearchTree::createTreeNode<int>(1);
+
+        for (int j = 0; j < 200000; j++) {
+            BinarySearchTree::insertNode(tree, rand() % 1000000 + 1); // números entre 1 e 1000000
+        }
+        auto start = high_resolution_clock::now();
+
+        BinarySearchTree::bfsSearchNode<int>(tree, 1000000); // modifique entre DFS e BFS
 
         auto end = high_resolution_clock::now();
         

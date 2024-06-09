@@ -47,7 +47,7 @@ namespace BinarySearchTree
         return startingNode;
     }
 
-    template<typename T>
+    template<typename T> // DFS Search
     Node<T>* searchNode(Node<T>* startingNode, T iData)
     {
         if(startingNode == nullptr) return nullptr;
@@ -154,6 +154,29 @@ namespace BinarySearchTree
         }
     }
 
+    // Parte 2 do Trabalho: Elaborar busca utilizando BFS (vocês já fizeram o DFS)
+    template<typename T>
+    Node<T>* bfsSearchNode(Node<T>* startingNode, T iData)
+    {
+        if (startingNode == nullptr) return nullptr;
+        
+        DoubleLinkedList::List<Node<T>*>* queue = DoubleLinkedList::createList<Node<T>*>();
+        DoubleLinkedList::insertEnd(queue, startingNode);
+
+        while (queue->ptrHead != nullptr)
+        {
+            Node<T>* current = queue->ptrHead->iPayload;
+            if (current->iPayload == iData) return current;
+
+            DoubleLinkedList::deleteNode(queue, queue->ptrHead);
+
+            if (current->ptrLeft != nullptr) DoubleLinkedList::insertEnd(queue, current->ptrLeft);
+            if (current->ptrRight != nullptr) DoubleLinkedList::insertEnd(queue, current->ptrRight);
+        }
+
+        return nullptr;
+    }
+
     // instanciação explícita
     template Node<int>* createTreeNode<int>(int);
     template Node<int>* insertNode<int>(Node<int>*, int);
@@ -164,6 +187,7 @@ namespace BinarySearchTree
     template void traverseInOrder<int>(Node<int>*);
     template void traversePostOrder<int>(Node<int>*);
     template void bfsTraversal<int>(Node<int>*);
+    template Node<int>* bfsSearchNode<int>(Node<int>*, int);
 
     template Node<float>* createTreeNode<float>(float);
     template Node<float>* insertNode<float>(Node<float>*, float);
@@ -174,4 +198,5 @@ namespace BinarySearchTree
     template void traverseInOrder<float>(Node<float>*);
     template void traversePostOrder<float>(Node<float>*);
     template void bfsTraversal<float>(Node<float>*);
+    template Node<float>* bfsSearchNode<float>(Node<float>*, float);
 }

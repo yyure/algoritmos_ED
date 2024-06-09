@@ -28,4 +28,6 @@ namespace BinarySearchTree
     void traversePostOrder(Node<T>*);
     template<typename T>
     void bfsTraversal(Node<T>*);
+    template<typename T>
+    Node<T>* bfsSearchNode(Node<T>*, T);
 }
