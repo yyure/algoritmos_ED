@@ -15,7 +15,7 @@ namespace BinarySearchTree
     template<typename T>
     Node<T>* insertNode(Node<T>*, T);
     template<typename T>
-    Node<T>* searchNode(Node<T>*, T);
+    Node<T>* dfsSearchNode(Node<T>*, T);
     template<typename T>
     Node<T>* lesserLeaf(Node<T>*);
     template<typename T>
@@ -30,4 +30,6 @@ namespace BinarySearchTree
     void bfsTraversal(Node<T>*);
     template<typename T>
     Node<T>* bfsSearchNode(Node<T>*, T);
+    template<typename T>
+    Node<T>* treeHeight(Node<T>*);
 }

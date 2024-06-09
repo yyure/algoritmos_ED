@@ -48,12 +48,12 @@ namespace BinarySearchTree
     }
 
     template<typename T> // DFS Search
-    Node<T>* searchNode(Node<T>* startingNode, T iData)
+    Node<T>* dfsSearchNode(Node<T>* startingNode, T iData)
     {
         if(startingNode == nullptr) return nullptr;
         else if(iData == startingNode->iPayload) return startingNode;
-        else if(iData < startingNode->iPayload) return searchNode(startingNode->ptrLeft, iData);
-        else return searchNode(startingNode->ptrRight, iData);
+        else if(iData < startingNode->iPayload) return dfsSearchNode(startingNode->ptrLeft, iData);
+        else return dfsSearchNode(startingNode->ptrRight, iData);
     }
 
     template<typename T>
@@ -138,7 +138,6 @@ namespace BinarySearchTree
     {
         if (startingNode == nullptr) return;
         
-        // Parte 1 do Trabalho: Alterar para Lista Encadeada
         DoubleLinkedList::List<Node<T>*>* queue = DoubleLinkedList::createList<Node<T>*>();
 
         DoubleLinkedList::insertEnd(queue, startingNode);
@@ -154,7 +153,6 @@ namespace BinarySearchTree
         }
     }
 
-    // Parte 2 do Trabalho: Elaborar busca utilizando BFS (vocês já fizeram o DFS)
     template<typename T>
     Node<T>* bfsSearchNode(Node<T>* startingNode, T iData)
     {
@@ -177,10 +175,23 @@ namespace BinarySearchTree
         return nullptr;
     }
 
+    template<typename T>
+    int treeHeight(Node<T>* startingNode)
+    {
+        if (startingNode == nullptr) return 0;
+        else
+        {
+            int iLeftHeight = treeHeight(startingNode->ptrLeft);
+            int iRightHeight = treeHeight(startingNode->ptrRight);
+            
+            return max(iLeftHeight, iRightHeight) + 1;
+        }
+    }
+
     // instanciação explícita
     template Node<int>* createTreeNode<int>(int);
     template Node<int>* insertNode<int>(Node<int>*, int);
-    template Node<int>* searchNode<int>(Node<int>*, int);
+    template Node<int>* dfsSearchNode<int>(Node<int>*, int);
     template Node<int>* lesserLeaf<int>(Node<int>*);
     template Node<int>* deleteNode<int>(Node<int>*, int);
     template void traversePreOrder<int>(Node<int>*);
@@ -188,10 +199,11 @@ namespace BinarySearchTree
     template void traversePostOrder<int>(Node<int>*);
     template void bfsTraversal<int>(Node<int>*);
     template Node<int>* bfsSearchNode<int>(Node<int>*, int);
+    template Node<int>* treeHeight<int>(Node<int>*);
 
     template Node<float>* createTreeNode<float>(float);
     template Node<float>* insertNode<float>(Node<float>*, float);
-    template Node<float>* searchNode<float>(Node<float>*, float);
+    template Node<float>* dfsSearchNode<float>(Node<float>*, float);
     template Node<float>* lesserLeaf<float>(Node<float>*);
     template Node<float>* deleteNode<float>(Node<float>*, float);
     template void traversePreOrder<float>(Node<float>*);
@@ -199,4 +211,5 @@ namespace BinarySearchTree
     template void traversePostOrder<float>(Node<float>*);
     template void bfsTraversal<float>(Node<float>*);
     template Node<float>* bfsSearchNode<float>(Node<float>*, float);
+    template Node<float>* treeHeight<float>(Node<float>*);
 }

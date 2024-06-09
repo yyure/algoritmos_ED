@@ -16,4 +16,7 @@ O trabalho para a A2 consiste (até então) das seguintes partes:
 
 # Observações
 - A pasta source (./src) contém os arquivos (.cpp) dos códigos das funções utilizadas e o headers (.h).
-- A pasta dos tempos (./agorithm times) contém os arquivos (.txt) com os tempos de execução dos algoritmos de ordenação aplicados nas listas utilizadas, os tempos de busca em árvores binárias (com DFS e BFS) e os tempos de criação de listas e árvores binárias.
+- A pasta dos tempos (./agorithm times) contém:
+    - Na pasta ./sort: os arquivos (.txt) com os tempos de execução dos algoritmos de ordenação aplicados nas listas duplamente encadeadas
+    - Na pasta ./search: os arquivos (.txt) com os tempos de busca em árvores binárias (com DFS e BFS)
+    - Na pasta ./creation: os arquivos (.txt) com os tempos de criação de listas e árvores binárias.

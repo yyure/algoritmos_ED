@@ -45,18 +45,18 @@ int main()
 
     BinarySearchTree::Node<int>* tree;
 
-    // criar 100 árvores binárias, com 200000 nós cada
+    // criar 100 árvores binárias, com 100000 nós cada
     // Analisar o tempo de cada tipo de busca
     for (int i = 0; i < 100; i++) {
 
         tree = BinarySearchTree::createTreeNode<int>(1);
 
-        for (int j = 0; j < 200000; j++) {
-            BinarySearchTree::insertNode(tree, rand() % 1000000 + 1); // números entre 1 e 1000000
+        for (int j = 0; j < 100000; j++) {
+            BinarySearchTree::insertNode(tree, rand() % 100000 + 1); // números entre 1 e 100000
         }
         auto start = high_resolution_clock::now();
 
-        BinarySearchTree::bfsSearchNode<int>(tree, 1000000); // modifique entre DFS e BFS
+        BinarySearchTree::bfsSearchNode<int>(tree, rand() % 100000 + 1); // modifique entre DFS e BFS
 
         auto end = high_resolution_clock::now();
         
