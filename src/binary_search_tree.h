@@ -31,5 +31,5 @@ namespace BinarySearchTree
     template<typename T>
     Node<T>* bfsSearchNode(Node<T>*, T);
     template<typename T>
-    Node<T>* treeHeight(Node<T>*);
+    int treeHeight(Node<T>*);
 }

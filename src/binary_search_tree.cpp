@@ -184,7 +184,14 @@ namespace BinarySearchTree
             int iLeftHeight = treeHeight(startingNode->ptrLeft);
             int iRightHeight = treeHeight(startingNode->ptrRight);
             
-            return max(iLeftHeight, iRightHeight) + 1;
+            if (iLeftHeight > iRightHeight)
+            {
+                return iLeftHeight + 1;
+            }
+            else
+            {
+                return iRightHeight + 1;
+            }
         }
     }
 
@@ -199,7 +206,7 @@ namespace BinarySearchTree
     template void traversePostOrder<int>(Node<int>*);
     template void bfsTraversal<int>(Node<int>*);
     template Node<int>* bfsSearchNode<int>(Node<int>*, int);
-    template Node<int>* treeHeight<int>(Node<int>*);
+    template int treeHeight<int>(Node<int>*);
 
     template Node<float>* createTreeNode<float>(float);
     template Node<float>* insertNode<float>(Node<float>*, float);
@@ -211,5 +218,5 @@ namespace BinarySearchTree
     template void traversePostOrder<float>(Node<float>*);
     template void bfsTraversal<float>(Node<float>*);
     template Node<float>* bfsSearchNode<float>(Node<float>*, float);
-    template Node<float>* treeHeight<float>(Node<float>*);
+    template int treeHeight<float>(Node<float>*);
 }
